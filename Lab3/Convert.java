@@ -8,15 +8,15 @@ class CelsiusToFahrenheit implements Function<Double,Double>{
 
 public class Convert {
 
-	public static double convertTemperature(double celsius, Function<Integer, Double> converter) {
-			return converter.apply(celsius);
+	public static double convertTemperature(double celsius, Function<Double, Double> celsiusToFahrenheit) {
+			return celsiusToFahrenheit.apply(celsius);
 	}
 
     public static void main(String[] args) {
 		
 		if (args.length == 1){
 			
-			Function<Integer, Double> celsiusToFahrenheit = new CelsiusToFahrenheit();
+			Function<Double, Double> celsiusToFahrenheit = new CelsiusToFahrenheit();
 			
 			System.out.println("Temperature in Fahrenheit : " + convertTemperature(Integer.parseInt(args[0]), celsiusToFahrenheit));
 		

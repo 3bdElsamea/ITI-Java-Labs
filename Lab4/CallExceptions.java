@@ -1,65 +1,46 @@
-// Create My Own Exception
-// Create a class that extends Exception
-// Create a constructor for this class that takes a String argument and stores it inside the object with a String reference
-// Create a method that prints out the stored String
-
-// Create a class with a method that throws an exception of the type you just created
-// In main(), call the method but place it inside a try-catch clause to catch the exception
-
-// Call the method without using a try-catch clause, and observe the results    
-//     }
-// }
 class MyException extends Exception {
-    private String message;
 
     public MyException(String message) {
-        this.message = message;
+        super(message);
     }
 
-    public String getMessage() {
-        return message;
-    }
 }
 
-// class with three methods to call the exception
 class ExceptionMethods {
-    public void method1() throws MyException {
-        throw new MyException("This is method 1");
+    public void firstMethod(int n) throws MyException {
+        if (n == 1)
+            throw new MyException("Method 1 Exception");
     }
 
-    public void method2() throws MyException {
-        throw new MyException("This is method 2");
+    public void secondMethod(int n) throws MyException {
+        if (n == 2)
+            throw new MyException("Method 2 Exception");
     }
 
-    public void method3() throws MyException {
-        throw new MyException("This is method 3");
+    public void thirdMethod(int n) throws MyException {
+        if (n == 3)
+            throw new MyException("Method 3 Exception");
     }
 }
 
-// main class that calls the last methods using try , catch and finally
 public class CallExceptions {
+    // Calling Function
+    public static void callMethod(int n) {
+        ExceptionMethods exception = new ExceptionMethods();
+        try {
+            exception.firstMethod(n);
+            exception.secondMethod(n);
+            exception.thirdMethod(n);
+        } catch (MyException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            System.out.println("Finally");
+        }
+    }
+
     public static void main(String[] args) {
-        ExceptionMethods exceptionMethods = new ExceptionMethods();
-        try {
-            exceptionMethods.method1();
-        } catch (MyException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            System.out.println("This is finally");
-        }
-        try {
-            exceptionMethods.method2();
-        } catch (MyException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            System.out.println("This is finally");
-        }
-        try {
-            exceptionMethods.method3();
-        } catch (MyException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            System.out.println("This is finally");
-        }
+        callMethod(1);
+        callMethod(2);
+        callMethod(3);
     }
 }
