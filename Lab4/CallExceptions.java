@@ -36,6 +36,7 @@ public class CallExceptions {
         } finally {
             System.out.println("Finally");
         }
+		
     }
 
     public static void main(String[] args) {
