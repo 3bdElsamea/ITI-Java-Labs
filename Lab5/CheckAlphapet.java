@@ -2,8 +2,7 @@ class CheckAlphapet {
 
     public static boolean onlyAlphabets(String str) {
         for (int i = 0; i < str.length(); i++) {
-            if (!Character
-                    .isLetter(str.charAt(i))) {
+            if (!Character.isLetter(str.charAt(i))) {
                 return false;
             }
         }
