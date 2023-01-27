@@ -35,9 +35,11 @@ public class SimpleWordDictionary {
         }
     }
 
-    // Implement the printAll method
+    // Implement the printAll method using iterator
     public void printAll() {
-        for (Map.Entry<Integer, ArrayList<String>> charSet : dictionary.entrySet()) {
+        Iterator<Map.Entry<Integer, ArrayList<String>>> iterator = dictionary.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, ArrayList<String>> charSet = iterator.next();
             char asciiToChar = (char) charSet.getKey().intValue();
             System.out.println(asciiToChar + " = " + charSet.getValue());
         }
