@@ -29,72 +29,71 @@ public class MultiThreading {
         imageLabel.setBounds(200, 200, 50, 50);
         frame.add(imageLabel);
 
-        // Thread for time
-        Thread timeThread = new Thread(() -> {
-            while (true) {
-                Date d = new Date();
-                timeLabel.setText(d.toString());
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        // Threads susing run Method
+        Thread timeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    Date d = new Date();
+                    timeLabel.setText(d.toString());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
         timeThread.start();
 
-        // Thread for moving text
-        Thread textThread = new Thread(() -> {
-            int x = 0;
-            int xDir = 1;
-            while (true) {
-                movingTextLabel.setBounds(x, 150, 150, 30);
-                x += xDir;
-                if (x <= 0 | x >= frame.getWidth() - movingTextLabel.getWidth()) {
-                    xDir *= -1;
-                }
+        Thread movingTextThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int x = 0;
+                int xDir = 1;
+                while (true) {
+                    movingTextLabel.setBounds(x, 150, 150, 30);
+                    x += xDir;
+                    if (x <= 0 | x >= frame.getWidth() - movingTextLabel.getWidth()) {
+                        xDir *= -1;
+                    }
 
-                try {
-                    Thread.sleep(5);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
-        textThread.start();
+        movingTextThread.start();
 
-        // Thread for moving image
-        Thread imageThread = new Thread(() -> {
-            int ballX = 100;
-            int ballY = 0;
-            int ballXDir = 5;
-            int ballYDir = 5;
-            while (true) {
-                imageLabel.setBounds(ballX, ballY, 50, 50);
-                ballX += ballXDir;
-                ballY += ballYDir;
-                if (ballX <= 0 | ballX >= frame.getWidth() - imageLabel.getWidth()) {
-                    ballXDir *= -1;
-                } else if (ballY <= 0 | ballY >= frame.getHeight() - imageLabel.getHeight()) {
-                    ballYDir *= -1;
-                }
-                // if (ballX == 500) {
-                //     ballXDir = -5;
-                // } else if (ballX == 0) {
-                //     ballXDir = 5;
-                // }
-                // if (ballY == 500) {
-                //     ballYDir = -5;
-                // } else if (ballY == 0) {
-                //     ballYDir = 5;
-                // }
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        Thread imageThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int x = 250;
+                int y = 0;
+                int xDir = 10;
+                int yDir = 10;
+                while (true) {
+                    imageLabel.setBounds(x, y, 50, 50);
+                    x += xDir;
+                    y += yDir;
+                    if (x <= 0 | x >= frame.getWidth() - imageLabel.getWidth()) {
+                        xDir *= -1;
+                    }
+                    if (y <= 0 | y >= frame.getHeight() - imageLabel.getHeight()) {
+                        yDir *= -1;
+                    }
+
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
-
+        imageThread.start();
     }
 }
