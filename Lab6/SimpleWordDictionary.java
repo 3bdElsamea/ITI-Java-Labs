@@ -2,18 +2,10 @@
 import java.util.*;
 
 public class SimpleWordDictionary {
-    private Map<Integer, ArrayList<String>> dictionary;
-
-    // assign the characters ascii code as key and an empty arraylist as value
-    public SimpleWordDictionary() {
-        dictionary = new HashMap<>();
-        for (int i = 97; i <= 122; i++) {
-            dictionary.put(i, new ArrayList<String>());
-        }
-    }
+    private Map<Character, ArrayList<String>> dictionary = new HashMap<>();
 
     // To Validate the Word before adding it to the Dictionary
-    public boolean validateWord(String word) {
+    private boolean validateWord(String word) {
         for (int i = 0; i < word.length(); i++) {
             if (!Character.isLetter(word.charAt(i))) {
                 return false;
@@ -25,32 +17,36 @@ public class SimpleWordDictionary {
     // Implement the add method
     public void add(String word) {
         if (validateWord(word)) {
-            int firstChar = Character.toLowerCase(word.charAt(0));
-            ArrayList<String> charList = dictionary.get(firstChar);
-            charList.add(word);
-            Collections.sort(charList);
-            dictionary.put(firstChar, charList);
+            char firstChar = Character.toLowerCase(word.charAt(0));
+            if (dictionary.get(firstChar) == null) {
+                ArrayList<String> wordsList = new ArrayList<>();
+                wordsList.add(word);
+                Collections.sort(wordsList);
+                dictionary.put(firstChar, wordsList);
+            } else {
+                ArrayList<String> wordsList = dictionary.get(firstChar);
+                wordsList.add(word);
+                Collections.sort(wordsList);
+            }
+
         } else {
             System.out.println("Word " + word + " is not valid");
         }
     }
 
-    // Implement the printAll method using iterator
+    // Implement the printAll method
     public void printAll() {
-        Iterator<Map.Entry<Integer, ArrayList<String>>> iterator = dictionary.entrySet().iterator();
+        Iterator<Map.Entry<Character, ArrayList<String>>> iterator = dictionary.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry<Integer, ArrayList<String>> charSet = iterator.next();
-            char asciiToChar = (char) charSet.getKey().intValue();
-            System.out.println(asciiToChar + " = " + charSet.getValue());
+            Map.Entry<Character, ArrayList<String>> wordsSet = iterator.next();
+            System.out.println(wordsSet.getKey() + " = " + wordsSet.getValue());
         }
     }
 
     // Implement the printByChar method
     public void printByChar(Character character) {
-        int charKey = Character.toLowerCase(character);
-        ArrayList<String> charList = dictionary.get(charKey);
-        char asciiToChar = (char) character;
-        System.out.println(asciiToChar + " = " + charList);
+        ArrayList<String> wordsSet = dictionary.get(character);
+        System.out.println(character + " = " + wordsSet);
     }
 
     public static void main(String[] args) {
@@ -69,17 +65,10 @@ public class SimpleWordDictionary {
         wordsDictionary.add("peter");
         wordsDictionary.add("paul");
 
-        // Accept Arguments from User to add
-        if (args.length > 0) {
-            for (String arg : args) {
-                wordsDictionary.add(arg);
-            }
-        }
-
         // Print all Records
         wordsDictionary.printAll();
 
-        System.out.println("__________________##______________");
+        System.out.println("__________________##___________________");
 
         // Print Records by Character
         wordsDictionary.printByChar('a');

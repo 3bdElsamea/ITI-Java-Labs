@@ -14,7 +14,6 @@ public class Exercise2 {
         CountryDao countryDao = InMemoryWorldDao.getInstance();
         // write your answer here
         // The Most populated city of each Continent
-        final Predicate<Entry<String, Optional<City>>> isPresent = entry -> entry.getValue().isPresent();
         final BiConsumer<String, Optional<City>> printEntry =
                 (k,v) -> {
                     City city = v.get();
