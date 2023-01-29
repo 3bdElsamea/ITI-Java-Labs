@@ -1,0 +1,122 @@
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import java.util.*;
+
+public class MultiThreading extends JFrame {
+
+    // JLabel timeLabel = new JLabel(); // Time Label
+    // JLabel movingTextLabel = new JLabel("Ahmed Abdelsamea"); // Moving Text Label
+   // JLabel imageLabel = new JLabel(); // Image Label
+
+    public MultiThreading() {
+        this.setTitle("Multi Threading Lab");
+        this.setLayout(null);
+        this.setBounds(50, 50, 700, 700);
+        this.setVisible(true);
+
+        // // Time
+        // timeLabel.setHorizontalAlignment(JLabel.CENTER);
+        // timeLabel.setBounds(200, 50, 200, 30);
+        // this.add(timeLabel);
+
+        // // Moving text
+        // movingTextLabel.setBounds(0, 150, 150, 30);
+        // this.add(movingTextLabel);
+
+        // // Image
+        // ImageIcon image = new ImageIcon("ball.png");
+        // imageLabel.setIcon(image);
+        // imageLabel.setBounds(200, 200, 50, 50);
+        // this.add(imageLabel);
+    }
+
+    public static void main(String[] args) {
+
+        MultiThreading app = new MultiThreading();
+
+        // Time
+        JLabel timeLabel = new JLabel();
+        timeLabel.setHorizontalAlignment(JLabel.CENTER);
+        timeLabel.setBounds(200, 50, 200, 30);
+        app.add(timeLabel);
+
+        // Moving text
+        JLabel movingTextLabel = new JLabel("Ahmed Abdelsamea");
+        movingTextLabel.setBounds(0, 150, 150, 30);
+        app.add(movingTextLabel);
+
+        // Image
+        JLabel imageLabel = new JLabel();
+        ImageIcon image = new ImageIcon("ball.png");
+        imageLabel.setIcon(image);
+        imageLabel.setBounds(200, 200, 50, 50);
+        app.add(imageLabel);
+
+        Thread timeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    Date d = new Date();
+                    timeLabel.setText(d.toString());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        timeThread.start();
+
+        Thread movingTextThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int x = 0;
+                int xDir = 1;
+                while (true) {
+                    movingTextLabel.setBounds(x, 150, 150, 30);
+                    x += xDir;
+                    if (x <= 0 | x >= app.getWidth() - movingTextLabel.getWidth()) {
+                        xDir *= -1;
+                    }
+
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        movingTextThread.start();
+
+        Thread imageThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int x = 250;
+                int y = 0;
+                int xDir = 10;
+                int yDir = 10;
+                while (true) {
+                    imageLabel.setBounds(x, y, 50, 50);
+                    x += xDir;
+                    y += yDir;
+                    if (x <= 0 | x >= app.getWidth() - imageLabel.getWidth()) {
+                        xDir *= -1;
+                    }
+                    if (y <= 0 | y >= app.getHeight() - imageLabel.getHeight()) {
+                        yDir *= -1;
+                    }
+
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        imageThread.start();
+    }
+}
