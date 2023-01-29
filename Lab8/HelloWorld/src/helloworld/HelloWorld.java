@@ -6,11 +6,16 @@
 package helloworld;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.Reflection;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -18,25 +23,24 @@ import javafx.stage.Stage;
  * @author lenovo
  */
 public class HelloWorld extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) {
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Hello World!");
-            }
-        });
-        
-        StackPane root = new StackPane();
-        root.getChildren().add(btn);
-        
-        Scene scene = new Scene(root, 300, 250);
-        
-        primaryStage.setTitle("Hello World!");
+        Text helloWorldTxt = new Text();
+        helloWorldTxt.setText("Hello World");
+        helloWorldTxt.setStyle("-fx-font: 40 arial; -fx-fill: red; -fx-stroke: black; -fx-stroke-width: 1;");
+
+        Reflection reflection = new Reflection();
+        reflection.setFraction(1);
+        helloWorldTxt.setEffect(reflection);
+
+        StackPane rootPane = new StackPane();
+        rootPane.getChildren().add(helloWorldTxt);
+        Stop[] stops = new Stop[] { new Stop(0, Color.BLACK), new Stop(0.5, Color.WHITE), new Stop(1, Color.BLACK) };
+        LinearGradient backGroundLabel = new LinearGradient(0, 0.2, 0, 1, true, CycleMethod.NO_CYCLE, stops);
+        Scene scene = new Scene(rootPane, 300, 250, backGroundLabel);
+
+        primaryStage.setTitle("Hello World Application");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -47,5 +51,5 @@ public class HelloWorld extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
