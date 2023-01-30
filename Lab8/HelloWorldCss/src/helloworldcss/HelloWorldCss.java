@@ -17,36 +17,29 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class HelloWorldCss extends Application {
-    
+
     @Override
     public void start(Stage primaryStage) {
-            Text myText = new Text() ; 
-            myText.setText("Hello World ");
-            myText.setFont(new Font(40));
-            myText.setFill(Color.RED);
-            StackPane rootPane = new StackPane();
+        Text helloWorldTxt = new Text();
+        helloWorldTxt.setText("Hello World ");
+        helloWorldTxt.setStyle("-fx-font: 40 arial; -fx-fill: red; -fx-stroke: black; -fx-stroke-width: 1;");
 
-            rootPane.getChildren().add(myText);
-            rootPane.setId("scene");
-            Reflection reflection = new Reflection(); 
-            reflection.setBottomOpacity(0.0); 
-            reflection.setTopOpacity(0.5); 
-            reflection.setTopOffset(0.0);
-            reflection.setFraction(1); 
-            myText.setEffect(reflection); 
-            Scene scene = new Scene(rootPane, 300, 250);
-            scene.getStylesheets().add(getClass().getResource("style.css").toString()) ; 
-            rootPane.getStyleClass().add("scene") ; 
-            primaryStage.setTitle("Hello World Application");
-            primaryStage.setScene(scene);
-            primaryStage.show();
+        Reflection reflection = new Reflection();
+        reflection.setFraction(1);
+        helloWorldTxt.setEffect(reflection);
+
+        StackPane rootPane = new StackPane();
+        rootPane.getChildren().add(helloWorldTxt);
+        rootPane.setId("backGroundLG");
+        Scene scene = new Scene(rootPane, 300, 250);
+        scene.getStylesheets().add(getClass().getResource("style.css").toString());
+        primaryStage.setTitle("Hello World Application");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
