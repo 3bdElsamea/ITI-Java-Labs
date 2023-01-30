@@ -4,17 +4,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -42,6 +46,25 @@ public class NotePadFXMLBase extends BorderPane {
     protected final Menu helpMenu;
     protected final MenuItem aboutOption;
     protected final TextArea textArea;
+
+    public void save() {
+        FileChooser chooseFile = new FileChooser();
+        chooseFile.setTitle("Save File");
+        chooseFile.setInitialFileName("Untitled.txt");
+        chooseFile.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "."));
+        File selectedFile = chooseFile.showSaveDialog(null);
+        if (selectedFile != null) {
+            try {
+                FileWriter fileWriter = new FileWriter(selectedFile);
+                fileWriter.write(textArea.getText());
+                fileWriter.close();
+            } catch (IOException ex) {
+                Logger.getLogger(NotePadFXMLBase.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     public NotePadFXMLBase() {
 
@@ -125,6 +148,7 @@ public class NotePadFXMLBase extends BorderPane {
 
         aboutOption.setMnemonicParsing(false);
         aboutOption.setText("About NotePad");
+        aboutOption.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
         setTop(menuBar);
 
         BorderPane.setAlignment(textArea, javafx.geometry.Pos.CENTER);
@@ -155,22 +179,41 @@ public class NotePadFXMLBase extends BorderPane {
 
         // Handling the new option
         newOption.setOnAction(e -> {
-            textArea.clear();
+            if (textArea.getText().trim().length() == 0)
+                textArea.clear();
+            else {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle(" notepad");
+                alert.setHeaderText("");
+                alert.setContentText("Do you want save change before New Text Area");
+                ButtonType dontSaveBtn = new ButtonType("dont save'");
+                ButtonType saveBtn = new ButtonType("SAVE");
+                ButtonType buttonCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+                alert.getButtonTypes().setAll(saveBtn, dontSaveBtn, buttonCancel);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == saveBtn) {
+                    save();
+                    textArea.clear();
+                } else if (result.get() == dontSaveBtn) {
+                    textArea.clear();
+                }
+
+            }
         });
 
         // Handiling the open option
         openOption.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Open File");
-            fileChooser.getExtensionFilters().addAll(
+            FileChooser chooseFile = new FileChooser();
+            chooseFile.setTitle("Open File");
+            chooseFile.getExtensionFilters().addAll(
                     new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                    new FileChooser.ExtensionFilter("All Files", "*.*"));
-            File selectedFile = fileChooser.showOpenDialog(null);
+                    new FileChooser.ExtensionFilter("All Files", "."));
+            File selectedFile = chooseFile.showOpenDialog(null);
             if (selectedFile != null) {
                 try (Scanner scanner = new Scanner(selectedFile);) {
                     while (scanner.hasNextLine()) {
                         String line = scanner.nextLine();
-                        textArea.appendText(line + "");
+                        textArea.appendText(line + "\n");
                     }
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(NotePadFXMLBase.class.getName()).log(Level.SEVERE, null, ex);
@@ -180,27 +223,30 @@ public class NotePadFXMLBase extends BorderPane {
 
         // Handling the save option
         saveOption.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save File");
-            fileChooser.setInitialFileName("Untitled.txt");
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                    new FileChooser.ExtensionFilter("All Files", "*.*"));
-            File selectedFile = fileChooser.showSaveDialog(null);
-            if (selectedFile != null) {
-                try {
-                    FileWriter fileWriter = new FileWriter(selectedFile);
-                    fileWriter.write(textArea.getText());
-                    fileWriter.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(NotePadFXMLBase.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            save();
         });
 
         // Handling the exit option
         exitOption.setOnAction(e -> {
-            Platform.exit();
+            if (textArea.getText().trim().length() == 0)
+                Platform.exit();
+            else {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle(" notepad");
+                alert.setHeaderText("");
+                alert.setContentText("Do you want save changes before Exit");
+                ButtonType dontSaveBtn = new ButtonType("dont save'");
+                ButtonType saveBtn = new ButtonType("SAVE");
+                ButtonType buttonCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+                alert.getButtonTypes().setAll(saveBtn, dontSaveBtn, buttonCancel);
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == saveBtn) {
+                    save();
+                    Platform.exit();
+                } else if (result.get() == dontSaveBtn) {
+                    Platform.exit();
+                }
+            }
         });
 
         // Handling the cut option
@@ -230,11 +276,11 @@ public class NotePadFXMLBase extends BorderPane {
 
         // Handling the about option
         aboutOption.setOnAction(e -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("About NotePad");
-            alert.setHeaderText("About NotePad");
-            alert.setContentText("This is a simple notepad application made using JavaFX");
-            alert.showAndWait();
+            Alert about = new Alert(Alert.AlertType.INFORMATION);
+            about.setTitle("About NotePad");
+            about.setHeaderText("");
+            about.setContentText("This is a notepad application made using JavaFX");
+            about.showAndWait();
         });
 
     }
