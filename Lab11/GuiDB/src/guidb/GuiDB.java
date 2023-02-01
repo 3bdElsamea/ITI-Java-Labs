@@ -167,12 +167,41 @@ public class GuiDB extends Application {
                 root.lNameField.setText(dataSet.getString(4));
                 root.emailField.setText(dataSet.getString(5));
                 root.phoneField.setText(dataSet.getString(6));
+                // If before first
+                if (dataSet.isBeforeFirst()) {
+                    dataSet.first();
+                    root.idField.setText(dataSet.getString(1));
+                    root.fNameField.setText(dataSet.getString(2));
+                    root.mNameField.setText(dataSet.getString(3));
+                    root.lNameField.setText(dataSet.getString(4));
+                    root.emailField.setText(dataSet.getString(5));
+                    root.phoneField.setText(dataSet.getString(6));
+                    // Alert
+                    Alert alert = new Alert(AlertType.INFORMATION, "You Are At The First Record");
+                    alert.setHeaderText("");
+                    alert.showAndWait();
+                }
             } catch (SQLException exc) {
                 System.out.println(exc.getMessage());
                 // Alert
                 Alert alert = new Alert(AlertType.INFORMATION, "You Are At The First Record");
                 alert.setHeaderText("");
                 alert.showAndWait();
+            }
+
+            try {
+                // If before first
+                if (dataSet.isBeforeFirst()) {
+                    dataSet.first();
+                    root.idField.setText(dataSet.getString(1));
+                    root.fNameField.setText(dataSet.getString(2));
+                    root.mNameField.setText(dataSet.getString(3));
+                    root.lNameField.setText(dataSet.getString(4));
+                    root.emailField.setText(dataSet.getString(5));
+                    root.phoneField.setText(dataSet.getString(6));
+                }
+            } catch (SQLException exc) {
+                System.out.println(exc.getMessage());
             }
         });
 
@@ -199,6 +228,21 @@ public class GuiDB extends Application {
                 Alert alert = new Alert(AlertType.INFORMATION, "You Are At The Last Record");
                 alert.setHeaderText("");
                 alert.showAndWait();
+            }
+
+            try {
+                // If after last
+                if (dataSet.isAfterLast()) {
+                    dataSet.last();
+                    root.idField.setText(dataSet.getString(1));
+                    root.fNameField.setText(dataSet.getString(2));
+                    root.mNameField.setText(dataSet.getString(3));
+                    root.lNameField.setText(dataSet.getString(4));
+                    root.emailField.setText(dataSet.getString(5));
+                    root.phoneField.setText(dataSet.getString(6));
+                }
+            } catch (SQLException exc) {
+                System.out.println(exc.getMessage());
             }
         });
 
