@@ -27,6 +27,19 @@ public class DataSourceDB {
                         selectAllSet.getInt(1) + ":" + selectAllSet.getString(2) + ":" + selectAllSet.getString(3)
                                 + ":" + selectAllSet.getString(4) + ":" + selectAllSet.getString(5));
             }
+            // Insert
+            // String addStudent = "INSERT INTO students VALUES (null, 'Mohsen',26
+            // ,'os','mohsen@gmail.com')";
+            // statement.executeUpdate(addStudent);
+            
+            // Update Student
+            // String updateStudent = "UPDATE students SET name = 'Helmy', email =
+            // 'osama@gmail.com' where id = 6";
+            // statement.executeUpdate(updateStudent);
+           
+            // Delete Student
+            // String deleteStudent = "DELETE FROM students WHERE id = 53";
+            // statement.executeUpdate(deleteStudent);
 
         } catch (SQLException e) {
             e.printStackTrace();
