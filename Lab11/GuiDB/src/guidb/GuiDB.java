@@ -105,6 +105,8 @@ public class GuiDB extends Application {
                         dataSet.moveToCurrentRow();
                         flag = true;
                         System.out.println("Inserted");
+                        // Going to Last record
+                        dataSet.last();
                         // Alert User
                         Alert alert = new Alert(AlertType.INFORMATION, "Inserted Successfully");
                         alert.setHeaderText("");
@@ -126,7 +128,7 @@ public class GuiDB extends Application {
             if (alert.getResult().getText().equals("OK")) {
                 try {
                     dataSet.deleteRow();
-                    dataSet.first();
+                    dataSet.previous();
                     root.idField.setText(dataSet.getString(1));
                     root.fNameField.setText(dataSet.getString(2));
                     root.mNameField.setText(dataSet.getString(3));
